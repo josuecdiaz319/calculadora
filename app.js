@@ -66,33 +66,47 @@ window.onload = function()
   {
     secondValue = parseFloat(display.innerText)
     let result
+
+    const options = {
+      baseURL: "http://localhost:3000/",
+      timeout: 5000,
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+
+    let operatorParam
     switch(selectedOperator)
     {
       case '+':
-
-        result = firstValue + secondValue
-        break;
-
+      operatorParam = "add"
+      break
       case '-':
-
-        result = firstValue - secondValue
-        break;
-
+      operatorParam = "sub"
+      break
       case '*':
-
-        result = firstValue * secondValue
-        break;
-
+      operatorParam = "mul";
+      break
       case '/':
-
-        result = firstValue / secondValue;
-        break;
-
+      operatorParam = "div"
+      break;
     }
-    console.log(firstValue)
-    console.log(secondValue)
-    console.log(selectedOperator)
-    display.innerText = result;
+
+
+
+    fetch(`http://localhost:3000/getresult/${firstValue}/${secondValue}/${operatorParam}`, options)
+    .then(res => res.json())
+    .then((response) => {
+      console.log(response);
+      display.innerText = response.result;
+    })
+
+    //
+    //console.log(firstValue)
+    //console.log(secondValue)
+    //console.log(selectedOperator)
+    //display.innerText = result;
   }
 
 }
