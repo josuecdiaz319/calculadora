@@ -1,6 +1,20 @@
 const express = require('express') //importa framework express
 const cors = require('cors') //importa cors
 const bodyParser = require('body-parser') //importa body parser
+const mongoose = require('mongoose') //importa orm mongodb
+const Result = require('./models')
+
+const url = "mongodb+srv://usuarionuevo:asdasd123@cluster0-xn5vs.mongodb.net/test?retryWrites=true&w=majority"
+
+mongoose.connect(url, {useNewUrlParser:true}, (error) => {
+  if(error){
+    console.log(error)
+  }
+  else {
+    console.log("DB conectada")
+  }
+})
+
 //import express from 'express'
 const app = express()
 
@@ -9,37 +23,38 @@ app.use(bodyParser.json())
 
 app.use(cors()) //ejecuta cors
 
-app.get('/getresult/:firstValue/:secondValue/:selectedOperator', function (req, res) {
-  //console.log(req.params)
-  //res.send({label:'Hello World'})
-const firstValue = parseFloat(req.params.firstValue)
-const secondValue = parseFloat(req.params.secondValue)
+app.get('/add/:firstValue/:secondValue', function (req, res) {
+  const result = parseFloat(req.params.firstValue) + parseFloat(req.params.secondValue)
+  res.send({result:result})
+  const newresult = new Result( {value: result})
+  newresult.save( (error, result) => {
+    if(error)
+    {
+      console.log(error)
+    }
+    else {
+      console.log(result)
+    }
+  })
+})
 
-  switch(req.params.selectedOperator)
-  {
-    case 'add':
-
-      result = firstValue + secondValue
-      break;
-
-    case 'sub':
-
-      result = firstValue - secondValue
-      break;
-
-    case 'mul':
-
-      result = firstValue * secondValue
-      break;
-
-    case 'div':
-
-      result = firstValue / secondValue;
-      break;
-
-  }
+app.get('/sub/:firstValue/:secondValue', function(req, res) {
+  const result = parseFloat(req.params.firstValue) - parseFloat(req.params.secondValue)
   res.send({result:result})
 })
+
+app.get('/mul/:firstValue/:secondValue', function (req, res) {
+  const result = parseFloat(req.params.firstValue) * parseFloat(req.params.secondValue)
+  res.send({result:result})
+})
+
+app.get('/div/:firstValue/:secondValue', function (req, res) {
+  const result = parseFloat(req.params.firstValue) / parseFloat(req.params.secondValue)
+  res.send({result:result})
+})
+
+
+
 
 app.listen(3000, () => {
   console.log("server corriendo en puerto 3000")

@@ -76,37 +76,42 @@ window.onload = function()
       }
     }
 
-    let operatorParam
     switch(selectedOperator)
     {
       case '+':
-      operatorParam = "add"
-      break
+        fetch(`http://localhost:3000/add/${firstValue}/${secondValue}`, options)
+        .then(res => res.json())
+        .then((response) => {
+          console.log(response);
+          display.innerText = response.result;
+        })
+        break
       case '-':
-      operatorParam = "sub"
-      break
+        fetch(`http://localhost:3000/sub/${firstValue}/${secondValue}`, options)
+        .then(res => res.json())
+        .then((response) => {
+          console.log(response);
+          display.innerText = response.result;
+        })
+        break
       case '*':
-      operatorParam = "mul";
-      break
+        fetch(`http://localhost:3000/mul/${firstValue}/${secondValue}`, options)
+        .then(res => res.json())
+        .then((response) => {
+          console.log(response);
+          display.innerText = response.result;
+        })
+        break
       case '/':
-      operatorParam = "div"
-      break;
+        fetch(`http://localhost:3000/div/${firstValue}/${secondValue}`, options)
+        .then(res => res.json())
+        .then((response) => {
+          console.log(response);
+          display.innerText = response.result;
+        })
+        break;
     }
 
-
-
-    fetch(`http://localhost:3000/getresult/${firstValue}/${secondValue}/${operatorParam}`, options)
-    .then(res => res.json())
-    .then((response) => {
-      console.log(response);
-      display.innerText = response.result;
-    })
-
-    //
-    //console.log(firstValue)
-    //console.log(secondValue)
-    //console.log(selectedOperator)
-    //display.innerText = result;
   }
 
 }
